@@ -1,18 +1,23 @@
 
-FROM node:14-alpine
-RUN apt-get update && \
-    apt-get install -y python3 && \
-    apt-get install -y build-essential
+FROM node:16
 
-RUN apt-get install -y libx11-xcb1 libxcb-dri3-0 libxtst6 libnss3 libcups2 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0
+RUN apt-get update && \
+    apt-get install -y python3 build-essential && \
+    apt-get install -y libx11-xcb1 libxcb-dri3-0 libxtst6 libnss3 libcups2 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0
+
 
 WORKDIR /app
 
-
 COPY package*.json ./
 
-RUN npm install --build-from-source --production
+
+RUN npm install && \
+    npm install -g node-gyp
+
 
 COPY . .
+
+
+RUN npm rebuild node-rfc
 
 CMD ["node", "app.js"]
