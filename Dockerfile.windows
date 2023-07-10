@@ -3,10 +3,9 @@ FROM stefanscherer/node-windows:8-windowsservercore
 
 ENV SAPNWRFC_HOME C:\nwrfcsdk
 
-WORKDIR $SAPNWRFC_HOME
+WORKDIR .
 
-
-COPY ../nwrfsdk .
+COPY nwrfcsdk/ .
 
 ENV DEPENDENCY_PATH=.\lib
 ENV PATH=%DEPENDENCY_PATH%;%PATH%
@@ -14,7 +13,6 @@ ENV PATH=%DEPENDENCY_PATH%;%PATH%
 WORKDIR /code
 
 
-COPY package.json /code/package.json
-RUN npm install --production
 COPY . .
+RUN npm install node-rfc@3.0.0
 CMD ["node", "app.js"]
